@@ -1,0 +1,51 @@
+name: paper_baseline
+
+data:
+  image_dir: "./data/raw/images"
+  sparam_paths:
+    s11: "./data/raw/sparams/s11_regression_tree.csv"
+    s21: "./data/raw/sparams/s21_regression_tree.csv"
+    p11: "./data/raw/sparams/p11_regression_tree.csv"
+    p21: "./data/raw/sparams/p21_regression_tree.csv"
+
+label:
+  # 논문(1번) 방식: 파일명 맨 끝 토큰에서 부식률 추출
+  # 예: xxx_xxx_10.34.png -> 10.34 (마지막 '_' 뒤)
+  parser: "raw_last_token"
+  round_digits: null
+  # sparam 테이블의 label(마지막 컬럼)도 그대로 사용
+  sparam_label_round_digits: null
+
+split:
+  mode: "none"         
+
+seed:
+  value: null          
+  deterministic: false
+
+train:
+  device: "cuda"
+  batch_size: 32
+  num_workers: 4
+  epochs: 2000
+  lr: 0.0001
+  early_stopping:
+    enabled: false
+
+model:
+  latent_dim: 50
+  num_layers: 3
+  s_param_dim: 201
+  image_size: [256, 256]
+
+loss:
+  # 논문(1번): L1 + L2 + KLD + VGG
+  use_l1: true
+  use_l2: true
+  use_kld: true
+  use_perceptual: true
+
+logging:
+  save_dir: "./outputs/paper"
+  save_best_only: false
+  save_loss_csv: false

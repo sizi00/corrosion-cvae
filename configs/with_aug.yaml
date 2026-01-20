@@ -1,0 +1,53 @@
+name: develop_with_aug
+
+data:
+  image_dir: "./data/augmented/images"
+  sparam_paths:
+    s11: "./data/augmented/sparams/S11.csv"
+    s21: "./data/augmented/sparams/S21.csv"
+    p11: "./data/augmented/sparams/Phase11.csv"
+    p21: "./data/augmented/sparams/Phase21.csv"
+
+label:
+  parser: "aug_third_token"   
+  round_digits: 10
+  sparam_label_round_digits: 10
+
+split:
+  mode: "random"
+  train_ratio: 0.8
+  generator_seed: 42
+
+seed:
+  value: 42
+  deterministic: true
+
+train:
+  device: "cuda:1"
+  batch_size: 32
+  num_workers: 4
+  epochs: 2000
+  lr: 0.0001
+  early_stopping:
+    enabled: true
+    patience: 100
+    monitor: "test_loss"
+    mode: "min"
+
+model:
+  latent_dim: 50
+  num_layers: 3
+  s_param_dim: 201
+  image_size: [256, 256]
+
+loss:
+  use_l1: false
+  use_l2: true
+  use_kld: true
+  use_perceptual: true
+
+logging:
+  save_dir: "./outputs/with_aug"
+  save_best_only: true
+  save_loss_csv: true
+  checkpoint_dir: "./outputs/with_aug/checkpoints"
