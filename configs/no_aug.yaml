@@ -7,16 +7,19 @@ data:
     s21: "./data/raw/sparams/s21_regression_tree.csv"
     p11: "./data/raw/sparams/p11_regression_tree.csv"
     p21: "./data/raw/sparams/p21_regression_tree.csv"
-
-label:
-  parser: "raw_last_token"     
+  label_parser: "raw_last_token"
   round_digits: null
   sparam_label_round_digits: null
+  channel: "red"
+  image_size: [256, 256]
+  normalize:
+    mean: [0.5]
+    std: [0.5]
 
 split:
   mode: "random"
   train_ratio: 0.8
-  generator_seed: 42
+  seed: 42
 
 seed:
   value: 42
@@ -31,23 +34,20 @@ train:
   early_stopping:
     enabled: true
     patience: 100
-    monitor: "test_loss"
-    mode: "min"
 
 model:
   latent_dim: 50
   num_layers: 3
   s_param_dim: 201
-  image_size: [256, 256]
 
 loss:
   use_l1: false
   use_l2: true
   use_kld: true
   use_perceptual: true
+  perceptual_layers: [3, 8, 15]
 
 logging:
-  save_dir: "./outputs/no_aug"
-  save_best_only: true
-  save_loss_csv: true
-  checkpoint_dir: "./outputs/no_aug/checkpoints"
+  output_dir: "./outputs/no_aug"
+  save_best: true
+  save_losses: true
