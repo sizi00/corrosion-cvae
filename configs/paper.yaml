@@ -1,0 +1,51 @@
+name: paper_baseline
+
+data:
+  image_dir: "./data/raw/images"
+  sparam_paths:
+    s11: "./data/raw/sparams/s11_regression_tree.csv"
+    s21: "./data/raw/sparams/s21_regression_tree.csv"
+    p11: "./data/raw/sparams/p11_regression_tree.csv"
+    p21: "./data/raw/sparams/p21_regression_tree.csv"
+  label_parser: "raw_last_token"
+  round_digits: null
+  sparam_label_round_digits: null
+  channel: "red"
+  image_size: [256, 256]
+  normalize:
+    mean: [0.5]
+    std: [0.5]
+
+split:
+  mode: "none"
+
+seed:
+  value: null
+  deterministic: false
+
+train:
+  device: "cuda"
+  batch_size: 32
+  num_workers: 4
+  epochs: 2000
+  lr: 0.0001
+  early_stopping:
+    enabled: false
+    patience: 100
+
+model:
+  latent_dim: 50
+  num_layers: 3
+  s_param_dim: 201
+
+loss:
+  use_l1: true
+  use_l2: true
+  use_kld: true
+  use_perceptual: true
+  perceptual_layers: [3, 8, 15]
+
+logging:
+  output_dir: "./outputs/paper"
+  save_best: false
+  save_losses: false
